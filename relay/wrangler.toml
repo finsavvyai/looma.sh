@@ -1,0 +1,36 @@
+name = "looma-relay"
+main = "src/index.ts"
+compatibility_date = "2024-09-01"
+
+[dev]
+port = 8787
+
+# Environment Variables (set via: wrangler secret put VARIABLE_NAME)
+# ALLOWED_ORIGINS - Comma-separated list of allowed origins (default: *)
+
+# KV namespace for V2V messages
+[[kv_namespaces]]
+binding = "LOOMAFEED"
+id = "dev-looma-feed"
+preview_id = "dev-looma-feed"
+
+# Production Environment
+[env.production]
+name = "looma-relay-production"
+routes = [
+  { pattern = "relay.looma.sh/*", zone_name = "looma.sh" }
+]
+vars = { ALLOWED_ORIGINS = "https://looma.sh,https://www.looma.sh,https://app.looma.sh" }
+
+[[env.production.kv_namespaces]]
+binding = "LOOMAFEED"
+id = "cfe696b6f99344b990085ef7396921ea"
+
+# Staging Environment
+[env.staging]
+name = "looma-relay-staging"
+vars = { ALLOWED_ORIGINS = "https://staging.looma.sh" }
+
+[[env.staging.kv_namespaces]]
+binding = "LOOMAFEED"
+id = "be9074400ead41f5986f8d9fecb29dd0"

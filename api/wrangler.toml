@@ -1,0 +1,57 @@
+name = "looma-edge-api"
+main = "src/index.ts"
+compatibility_date = "2024-05-01"
+
+# KV Namespaces for rate limiting and metrics
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "looma-rate-limit"
+preview_id = "looma-rate-limit-preview"
+
+[[kv_namespaces]]
+binding = "METRICS"
+id = "looma-metrics"
+preview_id = "looma-metrics-preview"
+
+# Environment variables (development)
+[vars]
+AI_SERVICE_URL = "http://127.0.0.1:9000"
+ALLOWED_ORIGINS = "*"
+
+# Secrets (use wrangler secret put to set these)
+# ADMIN_TOKEN - for admin endpoints
+
+# Production Environment
+[env.production]
+name = "looma-edge-api-production"
+routes = [
+  { pattern = "api.looma.sh/*", zone_name = "looma.sh" }
+]
+
+[[env.production.kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "0b86027bc79b4dd6b2816babd539a21b"
+
+[[env.production.kv_namespaces]]
+binding = "METRICS"
+id = "23d3115ecdaa4c10839deb2c094b653d"
+
+[env.production.vars]
+AI_SERVICE_URL = "https://api.looma.sh"
+ALLOWED_ORIGINS = "https://looma.sh,https://www.looma.sh,https://app.looma.sh"
+
+# Staging Environment
+[env.staging]
+name = "looma-edge-api-staging"
+
+[[env.staging.kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "staging-looma-rate-limit"
+
+[[env.staging.kv_namespaces]]
+binding = "METRICS"
+id = "staging-looma-metrics"
+
+[env.staging.vars]
+AI_SERVICE_URL = "https://api-staging.looma.sh"
+ALLOWED_ORIGINS = "https://staging.looma.sh"

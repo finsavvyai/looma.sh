@@ -1,0 +1,24 @@
+{
+  "name": "looma-video-automation",
+  "version": "1.0.0",
+  "description": "Automated video generation scripts for Looma.sh marketing video",
+  "scripts": {
+    "setup": "npm install",
+    "generate": "node automate_video_generation.js",
+    "generate:simple": "node automate_simple.js",
+    "open": "node open_browser_with_profile.js",
+    "open:simple": "node open_browser.js",
+    "generate:headless": "node automate_video_generation.js --headless"
+  },
+  "dependencies": {
+    "playwright": "^1.57.0",
+    "puppeteer": "^21.0.0"
+  },
+  "keywords": [
+    "automation",
+    "video-generation",
+    "looma"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+env/
+
+# Build output and caches
+.next/
+dist/
+build/
+out/
+coverage/
+.cache/
+.turbo/
+.pytest_cache/
+.wrangler/
+playwright-report/
+test-results/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+
+# Environment and local config
+.env
+.env.*
+!.env.example
+
+# Local data and generated archives
+*.db
+*.sqlite
+*.sqlite3
+*.zip
+
+# Logs and OS files
+*.log
+.DS_Store

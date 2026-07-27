@@ -1,0 +1,66 @@
+rules:
+  - name: hard_brake
+    intent_code: HARD_BRAKE_AHEAD
+    severity: danger
+    category: brake
+    description: "Vehicle ahead braking hard"
+    patterns:
+      - "hard brake"
+      - "emergency brake"
+      - "full stop"
+      - "panic brake"
+      - "slamming brakes"
+    weight: 1.0
+
+  - name: merge_warning
+    intent_code: MERGE_SOON
+    severity: warning
+    category: merge
+    description: "Vehicle merging or changing lanes"
+    patterns:
+      - "merge"
+      - "merging"
+      - "changing lanes"
+      - "lane change"
+    weight: 1.0
+
+  - name: hazard_alert
+    intent_code: HAZARD_AHEAD
+    severity: danger
+    category: hazard
+    description: "Hazard or obstacle on road"
+    patterns:
+      - "hazard"
+      - "debris"
+      - "obstacle"
+      - "danger ahead"
+      - "watch out"
+    weight: 1.0
+
+  - name: traffic_warning
+    intent_code: TRAFFIC_AHEAD
+    severity: warning
+    category: traffic
+    description: "Traffic congestion ahead"
+    patterns:
+      - "traffic"
+      - "slow down"
+      - "congestion"
+      - "backup"
+      - "jam"
+    weight: 0.9
+
+  - name: weather_warning
+    intent_code: WEATHER_HAZARD
+    severity: warning
+    category: weather
+    description: "Adverse weather conditions"
+    patterns:
+      - "rain"
+      - "fog"
+      - "ice"
+      - "icy"
+      - "snow"
+      - "slippery"
+      - "wet road"
+    weight: 0.9

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "event_id": "evt.synthetic.001",
+  "envelope_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "status": "accepted",
+  "idempotency": "created",
+  "received_at": "2030-01-01T00:00:01.000Z",
+  "credential_ref": "credential.synthetic.001",
+  "policy_decision_ref": "policy-decision.synthetic.001",
+  "schema_bundle": "schema-bundle.synthetic.001",
+  "release_id": "release.synthetic.001",
+  "authoritative_version": 1,
+  "signature": {
+    "algorithm": "Ed25519",
+    "key_id": "key.synthetic.server.001",
+    "value": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

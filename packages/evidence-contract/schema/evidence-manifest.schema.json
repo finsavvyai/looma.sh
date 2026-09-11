@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.looma.sh/evidence-manifest/1.0.0",
+  "title": "EvidenceManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "tenant_id",
+    "recipient",
+    "purpose",
+    "created_at",
+    "expires_at",
+    "source_events",
+    "source_facts",
+    "derived_facts",
+    "conflicts",
+    "disclosed_fields",
+    "withheld_fields",
+    "missing_requirements",
+    "retention",
+    "policy_ref",
+    "release_identity",
+    "signature"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "manifest_id": { "$ref": "#/$defs/opaqueId" },
+    "tenant_id": { "$ref": "#/$defs/opaqueId" },
+    "recipient": { "$ref": "#/$defs/recipient" },
+    "purpose": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "source_events": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceEvent" },
+      "minItems": 1,
+      "maxItems": 512
+    },
+    "source_facts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceFact" },
+      "maxItems": 2048
+    },
+    "derived_facts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/derivedFact" },
+      "maxItems": 2048
+    },
+    "conflicts": { "type": "array", "items": { "$ref": "#/$defs/conflict" }, "maxItems": 512 },
+    "disclosed_fields": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/jsonPointer" },
+      "uniqueItems": true
+    },
+    "withheld_fields": { "type": "array", "items": { "$ref": "#/$defs/withheldField" } },
+    "missing_requirements": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/opaqueId" },
+      "uniqueItems": true
+    },
+    "consent_refs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/opaqueId" },
+      "uniqueItems": true
+    },
+    "retention": { "$ref": "#/$defs/retention" },
+    "policy_ref": { "$ref": "#/$defs/versionedRef" },
+    "release_identity": { "$ref": "#/$defs/versionedRef" },
+    "signature": { "$ref": "#/$defs/signature" }
+  },
+  "$defs": {
+    "opaqueId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "jsonPointer": { "type": "string", "pattern": "^(?:/(?:[^~/]|~0|~1)*)*$", "maxLength": 1024 },
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": { "type": { "$ref": "#/$defs/opaqueId" }, "id": { "$ref": "#/$defs/opaqueId" } }
+    },
+    "sourceEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_event_id", "content_digest"],
+      "properties": {
+        "source_event_id": { "$ref": "#/$defs/opaqueId" },
+        "content_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "sourceFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fact_id", "source_event_id", "field_path", "value_digest"],
+      "properties": {
+        "fact_id": { "$ref": "#/$defs/opaqueId" },
+        "source_event_id": { "$ref": "#/$defs/opaqueId" },
+        "field_path": { "$ref": "#/$defs/jsonPointer" },
+        "value_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "derivedFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fact_id", "input_fact_ids", "transform", "value_digest"],
+      "properties": {
+        "fact_id": { "$ref": "#/$defs/opaqueId" },
+        "input_fact_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/opaqueId" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "transform": { "$ref": "#/$defs/versionedRef" },
+        "value_digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "conflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["conflict_id", "fact_ids", "status"],
+      "properties": {
+        "conflict_id": { "$ref": "#/$defs/opaqueId" },
+        "fact_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/opaqueId" },
+          "minItems": 2,
+          "uniqueItems": true
+        },
+        "status": { "enum": ["unresolved", "superseded"] },
+        "resolution_ref": { "$ref": "#/$defs/opaqueId" }
+      },
+      "if": { "properties": { "status": { "const": "superseded" } } },
+      "then": {
+        "required": ["resolution_ref"],
+        "properties": { "resolution_ref": {} }
+      },
+      "else": {
+        "not": {
+          "required": ["resolution_ref"],
+          "properties": { "resolution_ref": {} }
+        }
+      }
+    },
+    "withheldField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "reason_code"],
+      "properties": {
+        "path": { "$ref": "#/$defs/jsonPointer" },
+        "reason_code": { "$ref": "#/$defs/opaqueId" }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "expires_at"],
+      "properties": {
+        "policy_id": { "$ref": "#/$defs/opaqueId" },
+        "expires_at": { "type": "string", "format": "date-time" },
+        "legal_hold_ref": { "$ref": "#/$defs/opaqueId" }
+      }
+    },
+    "versionedRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": { "$ref": "#/$defs/opaqueId" },
+        "version": { "type": "string", "minLength": 1, "maxLength": 80 }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "key_id", "value"],
+      "properties": {
+        "algorithm": { "const": "Ed25519" },
+        "key_id": { "$ref": "#/$defs/opaqueId" },
+        "value": { "type": "string", "pattern": "^[0-9a-f]{128}$" }
+      }
+    }
+  }
+}

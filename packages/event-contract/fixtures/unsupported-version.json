@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0.0",
+  "event_id": "evt.synthetic.001",
+  "event_type": "sh.looma.synthetic.status",
+  "tenant_id": "tenant.synthetic.a",
+  "issuer": {
+    "id": "issuer.synthetic.a",
+    "credential_ref": "credential.synthetic.001",
+    "assurance": "verified"
+  },
+  "subject": {
+    "type": "resource",
+    "id": "subject.synthetic.001"
+  },
+  "occurred_at": "2030-01-01T00:00:00.000Z",
+  "received_at": "2030-01-01T00:00:01.000Z",
+  "expires_at": "2030-01-01T00:10:00.000Z",
+  "nonce": "0000000000000001",
+  "payload": {
+    "count": 1,
+    "message": "Café 東京",
+    "ratio": 0.000001
+  },
+  "payload_digest": "sha256:fb3d108e5c40bf5ead751415ae9ab6db951e9775336946c95c361eb9db026ba1",
+  "evidence": [],
+  "correlation_ids": {
+    "correlation_id": "flow.synthetic.001"
+  },
+  "location": {
+    "latitude": 31.778,
+    "longitude": 35.235,
+    "precision_m": 100,
+    "disclosure_classification": "purpose_bound"
+  },
+  "provenance": {
+    "source": "source.synthetic",
+    "adapter": "adapter.synthetic",
+    "adapter_version": "1.0.0"
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "key_id": "key.synthetic.001",
+    "value": "b32f9b77abb5271b1c76384eef0c1cacbd4b6f95b74f55e4a6aa8851dd2f004d4dd7df9c39413cd68831f80b3be29487a358ec8b975e160b5108227a0c304606"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "looma-contracts-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "event-contract",
+    "evidence-contract"
+  ],
+  "scripts": {
+    "generate:types": "json2ts -i event-contract/schema/event-envelope.schema.json -o event-contract/src/generated/event-envelope.ts && json2ts -i event-contract/schema/event-receipt.schema.json -o event-contract/src/generated/event-receipt.ts && json2ts -i evidence-contract/schema/evidence-manifest.schema.json -o evidence-contract/src/generated/evidence-manifest.ts",
+    "generate:vectors": "node event-contract/scripts/generate-vectors.mjs",
+    "format:generated": "prettier --write event-contract/src/generated evidence-contract/src/generated event-contract/fixtures",
+    "generate": "npm run generate:types && npm run generate:vectors && npm run format:generated",
+    "check:generated": "npm run generate && git diff --exit-code -- event-contract/src/generated event-contract/fixtures evidence-contract/src/generated",
+    "format": "prettier --write . ../docs/adr/*.md",
+    "format:check": "prettier --check . ../docs/adr/*.md",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run check:generated && npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "@noble/curves": "2.0.1",
+    "@noble/hashes": "2.0.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "json-canonicalize": "2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "json-schema-to-typescript": "15.0.4",
+    "prettier": "3.9.6",
+    "typescript": "5.6.3",
+    "vitest": "4.1.11"
+  }
+}

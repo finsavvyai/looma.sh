@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.looma.sh/event-receipt/1.0.0",
+  "title": "EventReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "envelope_digest",
+    "status",
+    "idempotency",
+    "received_at",
+    "credential_ref",
+    "policy_decision_ref",
+    "schema_bundle",
+    "release_id",
+    "signature"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "event_id": { "$ref": "#/$defs/opaqueId" },
+    "envelope_digest": { "$ref": "#/$defs/digest" },
+    "status": { "enum": ["accepted", "rejected"] },
+    "idempotency": { "enum": ["created", "replayed"] },
+    "received_at": { "type": "string", "format": "date-time" },
+    "credential_ref": { "$ref": "#/$defs/opaqueId" },
+    "policy_decision_ref": { "$ref": "#/$defs/opaqueId" },
+    "schema_bundle": { "$ref": "#/$defs/opaqueId" },
+    "release_id": { "$ref": "#/$defs/opaqueId" },
+    "authoritative_version": { "type": "integer", "minimum": 0 },
+    "signature": { "$ref": "#/$defs/signature" }
+  },
+  "$defs": {
+    "opaqueId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "key_id", "value"],
+      "properties": {
+        "algorithm": { "const": "Ed25519" },
+        "key_id": { "$ref": "#/$defs/opaqueId" },
+        "value": { "type": "string", "pattern": "^[0-9a-f]{128}$" }
+      }
+    }
+  }
+}

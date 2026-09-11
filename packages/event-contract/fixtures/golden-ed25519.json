@@ -1,0 +1,128 @@
+{
+  "vector_id": "r01-ed25519-1",
+  "private_key": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "public_key": "03a107bff3ce10be1d70dd18e74bc09967e4d6309ba50d5f1ddc8664125531b8",
+  "canonical_hex": "7b22636f7272656c6174696f6e5f696473223a7b22636f7272656c6174696f6e5f6964223a22666c6f772e73796e7468657469632e303031227d2c226576656e745f6964223a226576742e73796e7468657469632e303031222c226576656e745f74797065223a2273682e6c6f6f6d612e73796e7468657469632e737461747573222c2265766964656e6365223a5b5d2c22657870697265735f6174223a22323033302d30312d30315430303a31303a30302e3030305a222c22697373756572223a7b226173737572616e6365223a227665726966696564222c2263726564656e7469616c5f726566223a2263726564656e7469616c2e73796e7468657469632e303031222c226964223a226973737565722e73796e7468657469632e61227d2c226c6f636174696f6e223a7b22646973636c6f737572655f636c617373696669636174696f6e223a22707572706f73655f626f756e64222c226c61746974756465223a33312e3737382c226c6f6e676974756465223a33352e3233352c22707265636973696f6e5f6d223a3130307d2c226e6f6e6365223a2230303030303030303030303030303031222c226f636375727265645f6174223a22323033302d30312d30315430303a30303a30302e3030305a222c227061796c6f6164223a7b22636f756e74223a312c226d657373616765223a22436166c3a920e69db1e4baac222c22726174696f223a302e3030303030317d2c227061796c6f61645f646967657374223a227368613235363a66623364313038653563343062663565616437353134313561653961623664623935316539373735333336393436633935633336316562396462303236626131222c2270726f76656e616e6365223a7b2261646170746572223a22616461707465722e73796e746865746963222c22616461707465725f76657273696f6e223a22312e302e30222c22736f75726365223a22736f757263652e73796e746865746963227d2c2272656365697665645f6174223a22323033302d30312d30315430303a30303a30312e3030305a222c22736368656d615f76657273696f6e223a22312e302e30222c227369676e6174757265223a7b22616c676f726974686d223a2245643235353139222c226b65795f6964223a226b65792e73796e7468657469632e303031227d2c227375626a656374223a7b226964223a227375626a6563742e73796e7468657469632e303031222c2274797065223a227265736f75726365227d2c2274656e616e745f6964223a2274656e616e742e73796e7468657469632e61227d",
+  "signature": "b32f9b77abb5271b1c76384eef0c1cacbd4b6f95b74f55e4a6aa8851dd2f004d4dd7df9c39413cd68831f80b3be29487a358ec8b975e160b5108227a0c304606",
+  "negative_vectors": [
+    {
+      "id": "schema",
+      "path": "/schema_version",
+      "replacement": "1.0.1",
+      "expected": false
+    },
+    {
+      "id": "event_id",
+      "path": "/event_id",
+      "replacement": "evt.synthetic.changed",
+      "expected": false
+    },
+    {
+      "id": "event_type",
+      "path": "/event_type",
+      "replacement": "sh.looma.synthetic.changed",
+      "expected": false
+    },
+    {
+      "id": "tenant",
+      "path": "/tenant_id",
+      "replacement": "tenant.synthetic.changed",
+      "expected": false
+    },
+    {
+      "id": "issuer",
+      "path": "/issuer/id",
+      "replacement": "issuer.synthetic.changed",
+      "expected": false
+    },
+    {
+      "id": "subject",
+      "path": "/subject/id",
+      "replacement": "subject.synthetic.changed",
+      "expected": false
+    },
+    {
+      "id": "occurred_at",
+      "path": "/occurred_at",
+      "replacement": "2030-01-01T00:00:01.000Z",
+      "expected": false
+    },
+    {
+      "id": "received_at",
+      "path": "/received_at",
+      "replacement": "2030-01-01T00:00:02.000Z",
+      "expected": false
+    },
+    {
+      "id": "expires_at",
+      "path": "/expires_at",
+      "replacement": "2030-01-01T00:09:00.000Z",
+      "expected": false
+    },
+    {
+      "id": "nonce",
+      "path": "/nonce",
+      "replacement": "0000000000000002",
+      "expected": false
+    },
+    {
+      "id": "payload",
+      "path": "/payload/count",
+      "replacement": 2,
+      "expected": false
+    },
+    {
+      "id": "payload_digest",
+      "path": "/payload_digest",
+      "replacement": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "expected": false
+    },
+    {
+      "id": "evidence",
+      "path": "/evidence",
+      "replacement": [
+        {
+          "evidence_id": "e",
+          "content_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ],
+      "expected": false
+    },
+    {
+      "id": "correlation",
+      "path": "/correlation_ids/correlation_id",
+      "replacement": "flow.synthetic.changed",
+      "expected": false
+    },
+    {
+      "id": "location",
+      "path": "/location/precision_m",
+      "replacement": 200,
+      "expected": false
+    },
+    {
+      "id": "provenance",
+      "path": "/provenance/adapter_version",
+      "replacement": "1.0.1",
+      "expected": false
+    },
+    {
+      "id": "algorithm",
+      "path": "/signature/algorithm",
+      "replacement": "other",
+      "expected": false
+    },
+    {
+      "id": "key_id",
+      "path": "/signature/key_id",
+      "replacement": "key.synthetic.changed",
+      "expected": false
+    },
+    {
+      "id": "signature",
+      "path": "/signature/value",
+      "replacement": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "expected": false
+    }
+  ]
+}

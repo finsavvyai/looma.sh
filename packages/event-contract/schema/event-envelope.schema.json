@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.looma.sh/event-envelope/1.0.0",
+  "title": "EventEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "tenant_id",
+    "issuer",
+    "subject",
+    "occurred_at",
+    "received_at",
+    "expires_at",
+    "payload",
+    "payload_digest",
+    "evidence",
+    "provenance",
+    "signature"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "event_id": { "$ref": "#/$defs/opaqueId" },
+    "event_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*(\\.[a-z][a-z0-9-]*){2,}$",
+      "maxLength": 160
+    },
+    "tenant_id": { "$ref": "#/$defs/opaqueId" },
+    "issuer": { "$ref": "#/$defs/issuer" },
+    "subject": { "$ref": "#/$defs/subject" },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "received_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "nonce": { "type": "string", "minLength": 16, "maxLength": 128 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "payload": { "type": "object" },
+    "payload_digest": { "$ref": "#/$defs/digest" },
+    "evidence": {
+      "type": "array",
+      "maxItems": 128,
+      "items": { "$ref": "#/$defs/evidenceRef" }
+    },
+    "correlation_ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "correlation_id": { "$ref": "#/$defs/opaqueId" },
+        "causation_id": { "$ref": "#/$defs/opaqueId" }
+      },
+      "minProperties": 1
+    },
+    "location": { "$ref": "#/$defs/location" },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "signature": { "$ref": "#/$defs/signature" }
+  },
+  "oneOf": [
+    {
+      "required": ["nonce"],
+      "properties": { "nonce": {} },
+      "not": { "required": ["sequence"], "properties": { "sequence": {} } }
+    },
+    {
+      "required": ["sequence"],
+      "properties": { "sequence": {} },
+      "not": { "required": ["nonce"], "properties": { "nonce": {} } }
+    }
+  ],
+  "$defs": {
+    "opaqueId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "credential_ref", "assurance"],
+      "properties": {
+        "id": { "$ref": "#/$defs/opaqueId" },
+        "credential_ref": { "$ref": "#/$defs/opaqueId" },
+        "assurance": { "enum": ["verified", "attested", "declared", "derived"] }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "$ref": "#/$defs/opaqueId" },
+        "id": { "$ref": "#/$defs/opaqueId" }
+      }
+    },
+    "evidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "content_digest"],
+      "properties": {
+        "evidence_id": { "$ref": "#/$defs/opaqueId" },
+        "content_digest": { "$ref": "#/$defs/digest" },
+        "media_type": { "type": "string", "maxLength": 128 },
+        "uri": { "type": "string", "format": "uri", "maxLength": 2048 }
+      }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["latitude", "longitude", "precision_m", "disclosure_classification"],
+      "properties": {
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180 },
+        "precision_m": { "type": "number", "exclusiveMinimum": 0 },
+        "disclosure_classification": {
+          "enum": ["public", "tenant_restricted", "purpose_bound", "withheld"]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "adapter", "adapter_version"],
+      "properties": {
+        "source": { "$ref": "#/$defs/opaqueId" },
+        "adapter": { "$ref": "#/$defs/opaqueId" },
+        "adapter_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "transform": { "$ref": "#/$defs/opaqueId" },
+        "transform_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+      },
+      "dependentRequired": {
+        "transform": ["transform_version"],
+        "transform_version": ["transform"]
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "key_id", "value"],
+      "properties": {
+        "algorithm": { "const": "Ed25519" },
+        "key_id": { "$ref": "#/$defs/opaqueId" },
+        "value": { "type": "string", "pattern": "^[0-9a-f]{128}$" }
+      }
+    }
+  }
+}
